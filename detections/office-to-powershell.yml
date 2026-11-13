@@ -1,0 +1,24 @@
+title: Office Application Spawning PowerShell
+id: 8f3c2b1a-northwind-capstone
+status: experimental
+description: Detects PowerShell spawned by an Office process (macro execution)
+author: Umar Mohammed
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  parent:
+    ParentImage|endswith:
+      - '\EXCEL.EXE'
+      - '\WINWORD.EXE'
+      - '\POWERPNT.EXE'
+  child:
+    Image|endswith: '\powershell.exe'
+  condition: parent and child
+falsepositives:
+  - Legitimate signed macros (rare)
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1204.002
